@@ -1,0 +1,268 @@
+---
+title: "RunningiDemo"
+author: "Sulaiti"
+date: "2024-08-28"
+output: html_document
+---
+
+
+1. Import class one survey data from our Github site (https://github.com/kijohnson/ADA-2024) (The dataset is called ‘Class 1 Survey Fall 2024_di.csv’), calling the R dataframe that you create C1survey
+
+``````{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#knitr::opts_knit$set(root.dir = "/Users/sulaitimutebi/Desktop/All Stuff_America/Fall_Work_2024_1st_Semester/ADA")
+
+```
+
+```{r}
+
+# setwd("/Users/sulaitimutebi/Desktop/All Stuff_America/Fall_Work_2024_1st_Semester/ADA")
+
+# C1Survey <- read.csv ("Class_1_Survey_Fall_2024_di.csv")
+
+C1Survey <- read.csv("https://raw.githubusercontent.com/kijohnson/ADA-2024/main/Class%201%20(Getting%20started%20and%20RR%20I)/Lab/Class%201%20Survey%20Fall%202024_di.csv")
+```
+
+2. Determine: a. the number of observations (i.e. the number of people who filled out the survey) and b. the number of variables in the dataframe.
+
+The number of people who filled out the survey = 29 Observations
+
+The number of variables in the dataframe = 27 variable
+
+
+```{r}
+#use names function to rename the 27 variables in order
+
+names(C1Survey)[1:27]<-c("id", "like_cats", "like_dogs", "have_desert", "slogan",
+"fav_day", "larkORowl", "fav_food", "fav_drink", "fav_season", "fav_month", "hobby",
+"program", "specialization", "stat_software", "R_exp", "coding_comfort", "coding_length",
+"top_three","public_health_interest", "fav_num", "bday", "bmonth", "country", "state",
+"city", "highest_educ_level")
+
+# check column names
+
+colnames(C1Survey)
+
+```
+
+3. a. Rename the column variables to something shorter and that is descriptive of what the variable is about (for example like_dogs for the ‘Do you like dogs?’ question variable) and b. Display that they are renamed.
+
+
+```{r}
+
+
+
+```
+
+4. Write code to determine and display the number of factor, integer, numerical, and character variables there are in the C1Survey dataset.
+
+
+```{r}
+
+# Determining the data types of the columns
+
+data_types <- sapply(C1Survey, class)
+
+# Counting the number of each data type
+
+count_factor <- sum(data_types == "factor")
+count_integer <- sum(data_types == "integer")
+count_numerical <- sum(data_types == "numeric")
+count_character <- sum(data_types == "character")
+
+# Displaying the counts
+
+count_factor
+count_integer
+count_numerical
+count_character
+
+str(C1Survey) # Displaying the results using the str function
+
+table(sapply(C1Survey, class)) # Displaying the results using table and sappy function( This is the best solution)
+
+```
+
+5. Using code, check the bday and bmonth variables for any unusual or missing values. If you find any, b. describe what you will do with the unusual values in a comment before or immediately following the code that does it, and c. after you have cleaned up any unusual values, find the median bday and month. *Note: please make sure that your bday and month variables are numeric before doing statistics
+
+
+```{r}
+# looking at the variables bday and bmonth
+
+C1Survey$bday
+
+C1Survey$bmonth
+
+#recoding bday with non numeric values
+
+class(C1Survey$bday) # checking if it is coded as character class
+
+C1Survey$bday<-ifelse(C1Survey$bday == "May 21-report 21", "21", C1Survey$bday)
+
+C1Survey$bday<-ifelse(C1Survey$bday == "March 31st", "31", C1Survey$bday)
+
+C1Survey$bday # checking if the values have been changed 
+
+# converting bday to numeric 
+
+C1Survey$bday<-as.numeric(C1Survey$bday)
+
+table(C1Survey$bday, useNA = "always") # checking values
+
+
+# recoding bmonth with non numeric values
+
+#C1Survey$bmonth<-ifelse(C1Survey$bmonth == "May 21-report 5", "5", C1Survey$bmonth)- This is an alternative method to recode bmonth with non-numeric values
+
+class(C1Survey$bmonth)
+
+C1Survey$bmonth[C1Survey$bmonth=="May 21-report 5"]<-"5"
+
+C1Survey$bmonth[C1Survey$bmonth=="February"]<-"2"
+
+C1Survey$bmonth[C1Survey$bmonth=="September"]<-"9"
+
+C1Survey$bmonth[C1Survey$bmonth=="July"]<-"7"
+
+C1Survey$bmonth[C1Survey$bmonth=="March"]<-"3"
+
+C1Survey$bmonth # checking values 
+
+# Converting bmonth to numeric 
+
+C1Survey$bmonth <- as.numeric(C1Survey$bmonth)
+
+table(C1Survey$bmonth, useNA = "always") # checking values
+
+
+# Checking for unusual or missing values in bday and bmonth
+
+summary(C1Survey$bday)
+
+summary(C1Survey$bmonth)
+
+# Handling unusual or missing values
+# For bday: valid values are between 1 and 31
+# For bmonth: valid values are between 1 and 12
+
+# Remove or handle invalid bday values
+
+C1Survey$bday[!(C1Survey$bday >= 1 & C1Survey$bday <= 31)] <- NA
+
+# Removing or handling invalid bmonth values
+
+C1Survey$bmonth[!(C1Survey$bmonth >= 1 & C1Survey$bmonth <= 12)] <- NA
+
+# After handling unusual values, checking for remaining NA values
+
+summary(C1Survey$bday)
+
+summary(C1Survey$bmonth)
+
+# Calculating the median for bday and bmonth after cleaning
+
+median_bday <- median(C1Survey$bday, na.rm = TRUE)
+
+median_bmonth <- median(C1Survey$bmonth, na.rm = TRUE)
+
+# Displaying median_bday and Median_bmonth
+
+median_bday
+median_bmonth
+```
+
+6. a. Create a new variable called bseason that gives the season according to Northern Meteorological season in which respondents were born (winter = 12/1 to 2/29, spring = 3/1 to 5/31, summer = 6/1 to 8/31, fall = 9/1 to 11/30). b. Using the table function, print a table of Seasons in the columns and bmonths in the rows that allows you to check that the coding is correct c. Sum the columns using the addmargins function to answer the question of how many classmates were born in each season? Include your answer in the code.
+
+
+```{r}
+
+# Creating a new variable bseason based on bmonth and bday
+
+C1Survey$bseason <- with(C1Survey, 
+                         ifelse((bmonth == 12 & bday >= 1) | (bmonth == 1) | (bmonth == 2), "Winter",
+                         ifelse((bmonth == 3) | (bmonth == 4) | (bmonth == 5), "Spring",
+                         ifelse((bmonth == 6) | (bmonth == 7) | (bmonth == 8), "Summer",
+                         ifelse((bmonth == 9) | (bmonth == 10) | (bmonth == 11), "Fall", NA)))))
+
+# Printing a table of Seasons in the columns and bmonths in the rows
+
+season_table <- table(C1Survey$bmonth, C1Survey$bseason)
+
+print(season_table)
+
+# Summing the columns to see how many classmates were born in each season
+
+season_summary <- addmargins(season_table, margin = 1)
+
+print(season_summary)
+
+
+# Displaying the total number of classmates born in each season
+
+cat("Number of classmates born in each season:\n")
+
+print(season_summary["Sum", ])
+
+
+```
+
+7. Pick your favorite variable or variables to analyze, come up with a question you want to answer with that variable or variables, generate the code, and provide an answer to your question. Describe what you did using comments (i.e. #’s).
+
+
+```{r}
+
+
+# Hypothetical variables: R_exp and highest_educ_level
+
+# Convert R_exp to numeric
+C1Survey$R_exp <- as.numeric(C1Survey$R_exp)
+
+# The variable 'highest_educ_level' records respondents' level of education.
+
+# Convert 'highest_educ_level'to a factor to analyze categorical data
+
+C1Survey$highest_educ_level <- as.factor(C1Survey$highest_educ_level)
+
+# Analyze the distribution of level of education by R experience
+
+education_r_table <- table(C1Survey$R_exp, C1Survey$highest_educ_level)
+
+# Print the table to see the distribution of level of education across level of experience in R
+
+print(education_r_table)
+
+# Display the total number of classmate representing different levels of education 
+
+education_r_table <- addmargins(season_table, margin = 1)
+
+print(education_r_table)
+
+cat("Number of classmate representing different levels of education :\n")
+
+print(education_r_table["Sum", ])
+
+# Check for any missing or unusual values
+
+summary(C1Survey$R_exp)
+
+summary(C1Survey$highest_educ_level)
+
+# Plot the relationship between R_exp and highest_educ_level
+
+barplot(education_r_table, 
+        main = "Relationship between R_exp and highest_educ_level", 
+        xlab = "R Experience", 
+        ylab = "Number of Respondents", 
+        col = "lightblue", 
+        ylim = c(0, max(education_r_table) + 20))
+
+
+plot(C1Survey$R_exp, C1Survey$highest_educ_level,
+     main = "Relationship between R_exp and highest_educ_level",
+     xlab = "R Experience",
+     ylab = "Education Level",
+     pch = 19, col = "blue")
+
+
+
