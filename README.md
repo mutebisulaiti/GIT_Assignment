@@ -1,15 +1,25 @@
-# This file contains all the 7 questions answered in the Class 1 Survey 
+#ADA Class Project
 
-# 1. Import class one survey data from our Github site (https://github.com/kijohnson/ADA-2024) (The dataset is called ‘Class 1 Survey Fall 2024_di.csv’), calling the R dataframe that you create C1survey
+Description Of The Project
+This is a data analysis project for the class focusing on the analysis of the survey data
+The project involves working with a dataset from a GitHub repository titled "Class 1 Survey Fall 2024". 
+The project involves.
+Data Importation: The survey data is imported from a GitHub link and loaded into a data frame named “C1Survey”.
+Basic Data Exploration: The project calculates the number of observations (survey respondents) and the number of variables (survey questions).
+Renaming Variables: Column names are renamed to more descriptive and concise labels.
+Data Type Exploration: The code aims to identify the types of variables in the dataset i.e. (factors, integers, numeric, or characters).
 
-# 2. Determine: a. the number of observations (i.e. the number of people who filled out the survey) and b. the number of variables in the dataframe.
+Description Of The Code
+Setup: The document sets up the environment using “knitr:opts_chunk$set(echo = TRUE)”  to control code chunk options.
+Data Import: 
+“C1Survey <- read.csv("https://raw.githubusercontent.com/kijohnson/ADA-2024/main/Class%201%20(Getting%20started%20and%20RR%20I)/Lab/Class%201%20Survey%20Fall%202024_di.csv")”
+The code imports the survey data directly from the provided URL.
+Renaming Columns: 
+names(C1Survey)[1:27]<-c("id", "like_cats", "like_dogs", "have_desert", "slogan",
+"fav_day", "larkORowl", "fav_food", "fav_drink", "fav_season", "fav_month", "hobby",
+"program", "specialization", "stat_software", "R_exp", "coding_comfort", "coding_length",
+"top_three","public_health_interest", "fav_num", "bday", "bmonth", "country", "state",
+"city", "highest_educ_level")   The dataset's columns are renamed for easier interpretation.
 
-# 3. a. Rename the column variables to something shorter and that is descriptive of what the variable is about (for example like_dogs for the ‘Do you like dogs?’ question variable) and b. Display that they are renamed.
-
-# 4. Write code to determine and display the number of factor, integer, numerical, and character variables there are in the C1Survey dataset.
-
-# 5. Using code, check the bday and bmonth variables for any unusual or missing values. If you find any, b. describe what you will do with the unusual values in a comment before or immediately following the code that does it, and c. after you have cleaned up any unusual values, find the median bday and month. *Note: please make sure that your bday and month variables are numeric before doing statistics
-
-# 6. a. Create a new variable called bseason that gives the season according to Northern Meteorological season in which respondents were born (winter = 12/1 to 2/29, spring = 3/1 to 5/31, summer = 6/1 to 8/31, fall = 9/1 to 11/30). b. Using the table function, print a table of Seasons in the columns and bmonths in the rows that allows you to check that the coding is correct c. Sum the columns using the addmargins function to answer the question of how many classmates were born in each season? Include your answer in the code.
-
-# 7. Pick your favorite variable or variables to analyze, come up with a question you want to answer with that variable or variables, generate the code, and provide an answer to your question. Describe what you did using comments (i.e. #’s).
+Description Of The Dataset
+The dataset is a survey with responses from various individuals from different disciplines attending the Advanced Data Analysis course. It includes various questions related to preference, personality, and demographic information. The dataset captures both qualitative and quantitative responses
